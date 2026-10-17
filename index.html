@@ -1039,8 +1039,8 @@ const D = [
     ["Standalone singles", "Single", ["Drown (Singles soundtrack)", "Chrome Jets", "G.L.O.W.", "FOL", "Formosa", "Our Lady of Sorrows"]],
     ["B-sides › Pre-Gish era (1988–90)", "B-side", ["Sun", "My Dahlia", "Not Worth Asking", "Jennifer Ever", "East", "Nothing and Everything", "Spiteface"]],
     ["B-sides › Gish era (1990–92)", "B-side", ["Slunk", "Bye June", "Smiley", "Bullet Train to Osaka", "Terrapin", "Glynis", "Daughter"]],
-    ["B-sides › Siamese Dream era (1993–94)", "B-side", ["Dancing in the Moonlight", "Siamese Dream", "French Movie Theme", "Purr Snickety", "Honeyspider II", "Never Let Me Down Again"]],
-    ["B-sides › Adore era (1997–99)", "B-side", ["Eye (Lost Highway)", "The End Is the Beginning Is the End (Batman & Robin)", "Because You Are", "My Mistake", "Sparrow", "Waiting", "Blissed and Gone", "Czarina", "Summer", "Cross", "Do You Close Your Eyes?", "Jersey Shore", "Indecision", "O Rio", "It's Alright", "Heaven", "Valentine", "Once in a While", "The Ethers Tragic", "The Guns of Love Disastrous", "Apathy's Last Kiss"]],
+    ["B-sides › Siamese Dream era (1993–94)", "B-side", ["Dancing in the Moonlight", "Siamese Dream", "French Movie Theme", "Purr Snickety", "Honeyspider II", "Never Let Me Down Again", "Apathy's Last Kiss"]],
+    ["B-sides › Adore era (1997–99)", "B-side", ["Eye (Lost Highway)", "The End Is the Beginning Is the End (Batman & Robin)", "Because You Are", "My Mistake", "Sparrow", "Waiting", "Blissed and Gone", "Czarina", "Summer", "Cross", "Do You Close Your Eyes?", "Jersey Shore", "Indecision", "O Rio", "It's Alright", "Heaven", "Valentine", "Once in a While", "The Ethers Tragic", "The Guns of Love Disastrous"]],
     ["B-sides › Machina era (2000–25)", "B-side", ["Winterlong", "Soot + Stars", "Rock On", "God's Promise", "Don't Wanna Be Your Lover", "Without You", "Yet Another Promise"]],
     ["B-sides › Zeitgeist era (2007–09)", "B-side", ["Ma Belle", "Stellar", "Death From Above", "Zeitgeist (Target Bonus Track)", "Superchrist", "The Beginning Is the End Is the Beginning"]],
     ["B-sides › Atum era (2023)", "B-side", ["Zope"]],
@@ -1061,7 +1061,7 @@ try {
 }
 catch (e) {
 }
-const MG = { 'B-sides › Siamese Dream era (1993–94)|Not Worth Asking': 'B-sides › Pre-Gish era (1988–90)|Not Worth Asking', 'B-sides › Adore era (1997–99)|Saturnine': 'Machina II: The Friends & Enemies of Modern Music (2000)|Saturnine', 'Soundtrack appearances|Drown (Singles)': 'Standalone singles|Drown (Singles soundtrack)', 'Soundtrack appearances|Eye (Lost Highway)': 'B-sides › Adore era (1997–99)|Eye (Lost Highway)', 'Soundtrack appearances|The End Is the Beginning Is the End (Batman & Robin)': 'B-sides › Adore era (1997–99)|The End Is the Beginning Is the End (Batman & Robin)' };
+const MG = { 'B-sides › Adore era (1997–99)|Apathy\'s Last Kiss': 'B-sides › Siamese Dream era (1993–94)|Apathy\'s Last Kiss', 'B-sides › Siamese Dream era (1993–94)|Not Worth Asking': 'B-sides › Pre-Gish era (1988–90)|Not Worth Asking', 'B-sides › Adore era (1997–99)|Saturnine': 'Machina II: The Friends & Enemies of Modern Music (2000)|Saturnine', 'Soundtrack appearances|Drown (Singles)': 'Standalone singles|Drown (Singles soundtrack)', 'Soundtrack appearances|Eye (Lost Highway)': 'B-sides › Adore era (1997–99)|Eye (Lost Highway)', 'Soundtrack appearances|The End Is the Beginning Is the End (Batman & Robin)': 'B-sides › Adore era (1997–99)|The End Is the Beginning Is the End (Batman & Robin)' };
 const DATA = { ratings: { objects: ['r', 'xr', 'rh'], extras: [] }, other: { objects: ['cv', 'tg', 'ds', 'gd', 'fv', 'lk', 'el', 'ec', 'cn', 'hb', 'gb', 'dy', 'dd', 'tl'], extras: ['bh', 'bc', 'sl', 'sn'] }, kept: ['open', 'nm', 'hid', 'gs', 'gh', 'ch', 'an', 'th', 'ci', 'hd', 'ac'] };
 const OBJ_KEYS = [...DATA.ratings.objects, ...DATA.other.objects, ...DATA.kept];
 const wipeData = g => {
@@ -1072,7 +1072,7 @@ const fix = () => {
     OBJ_KEYS.forEach(k => S[k] = S[k] || {});
     S.c = S.c || [];
     S.sort = S.sort || 'track';
-    Object.keys(MG).forEach(k => ['r', 'nm', 'ds'].forEach(m => {
+    Object.keys(MG).forEach(k => ['r', 'nm', 'ds', 'fv', 'tg', 'lk', 'xr', 'rh', 'el', 'ec'].forEach(m => {
         if (S[m][k] != null) {
             S[m][MG[k]] = S[m][k];
             delete S[m][k];
