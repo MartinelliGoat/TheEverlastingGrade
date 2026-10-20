@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<title>Profile</title>
+<style>
+:root{--bg:#fff;--fg:#1d1d22;--mut:#5d5d68;--line:#d9d9e0;--ac:#6a3de8;--card:#f6f5fa}
+@media(prefers-color-scheme:dark){:root{--bg:#14141a;--fg:#ececf1;--mut:#a5a5b3;--line:#2c2c36;--ac:#a98bff;--card:#1c1c25}}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,sans-serif}
+main{max-width:720px;margin:0 auto;padding:24px 16px 60px}
+h1{font-size:28px;margin:0}h2{font-size:20px;margin:0 0 4px}h3{font-size:15px;margin:16px 0 6px}
+.mut{color:var(--mut);font-size:14px}a{color:var(--ac)}
+section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:18px 0}
+.row{display:grid;grid-template-columns:1fr 64px;gap:4px 10px;align-items:center;margin:6px 0;font-size:14px}
+.bar{grid-column:1/-1;height:8px;background:var(--line);border-radius:4px;overflow:hidden}.bar i{display:block;height:100%;background:var(--ac)}
+.v{text-align:right;font-weight:600}ol{margin:4px 0 0 20px;padding:0}li{margin:3px 0}
+footer{margin-top:28px;font-size:13px;color:var(--mut)}
+</style>
+</head>
+<body>
+<main id="app"><p class="mut">Loading…</p></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+(function(){
+var app=document.getElementById("app");
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+function msg(t){app.textContent="";app.appendChild(el("p","mut",t))}
+var slug=new URLSearchParams(location.search).get("u")||"";
+if(!/^[a-z0-9][a-z0-9-]{2,23}$/.test(slug))return msg("This profile link isn't valid.");
+var db=window.supabase.createClient("https://xvpvwgrpihzcokqrnwbh.supabase.co","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2cHZ3Z3JwaWh6Y29rcXJud2JoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIyNTQ0ODgsImV4cCI6MjEwNzgzMDQ4OH0.NfnSNQH6tPAJao62adMlYtM9idP62ykG0Hpp2A5fz3o");
+db.from("public_profiles").select("data,updated_at").eq("slug",slug).maybeSingle().then(function(r){
+ if(r.error)return msg("Couldn't load this profile right now.");
+ if(!r.data)return msg("No profile found at this link. It may have been unpublished.");
+ var d=r.data.data||{};document.title=String(d.name||"Profile").slice(0,40)+" – ratings";
+ app.textContent="";
+ app.appendChild(el("h1",0,String(d.name||"Profile").slice(0,40)));
+ if(d.bio)app.appendChild(el("p",0,String(d.bio).slice(0,140)));
+ app.appendChild(el("p","mut","Updated "+new Date(r.data.updated_at).toLocaleDateString()));
+ (Array.isArray(d.artists)?d.artists:[]).slice(0,20).forEach(function(a){
+  var s=el("section");s.appendChild(el("h2",0,String(a.name||"").slice(0,60)));
+  s.appendChild(el("div","mut",(Number(a.rated)||0)+" of "+(Number(a.total)||0)+" songs rated · average "+(Number(a.avg)||0).toFixed(1)));
+  if(Array.isArray(a.albums)&&a.albums.length){s.appendChild(el("h3",0,"Top albums"));
+   a.albums.slice(0,10).forEach(function(b){var row=el("div","row");row.appendChild(el("span",0,String(b.n||"").slice(0,80)));row.appendChild(el("span","v",(Number(b.avg)||0).toFixed(1)));
+    var bar=el("div","bar"),i=el("i");i.style.width=Math.max(0,Math.min(100,(Number(b.avg)||0)*10))+"%";bar.appendChild(i);row.appendChild(bar);s.appendChild(row)})}
+  if(Array.isArray(a.songs)&&a.songs.length){s.appendChild(el("h3",0,"Top songs"));var ol=el("ol");
+   a.songs.slice(0,10).forEach(function(g){var li=el("li");li.appendChild(document.createTextNode(String(g.n||"").slice(0,80)+" "));li.appendChild(el("span","mut","· "+String(g.g||"").slice(0,60)+" · "+(Number(g.r)||0).toFixed(1)));ol.appendChild(li)});s.appendChild(ol)}
+  app.appendChild(s)});
+ var f=el("footer");f.appendChild(document.createTextNode("Unofficial fan project, not affiliated with any artist. "));
+ var h=el("a",0,"Make your own ratings");h.href="./";f.appendChild(h);f.appendChild(document.createTextNode(" · "));
+ var p=el("a",0,"Privacy policy");p.href="privacy.html";f.appendChild(p);app.appendChild(f);
+});
+})();
+</script>
+</body>
+</html>
